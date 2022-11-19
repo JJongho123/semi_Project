@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>fresh_project</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+     <display-name>UserFrontController</display-name>
+     <servlet-name>UserFrontController</servlet-name>
+     <servlet-class>net.login.action.UserFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>UserFrontController</servlet-name>
+     <url-pattern>*.kr</url-pattern>
+  </servlet-mapping>
+  
+     <servlet>
+     <servlet-name>MainFrontController</servlet-name>
+     <servlet-class>net.firstpage.action.MainFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>MainFrontController</servlet-name>
+     <url-pattern>*.bo</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+     <display-name>MyPageFrontController</display-name>
+     <servlet-name>MyPageFrontController</servlet-name>
+     <servlet-class>net.mypage.action.MyPageFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>MyPageFrontController</servlet-name>
+     <url-pattern>*.or</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+     <display-name>ReviewFrontController</display-name>
+     <servlet-name>ReviewFrontController</servlet-name>
+     <servlet-class>net.review.action.ReviewFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+     <servlet-name>ReviewFrontController</servlet-name>
+     <url-pattern>*.rv</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 세연씨 컨트롤러 um -->
+  <servlet>
+    <servlet-name>QnaFrontController</servlet-name>
+    <servlet-class>net.qna.action.QnaFrontController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>QnaFrontController</servlet-name>
+    <url-pattern>*.um</url-pattern>
+  </servlet-mapping>
+  
+    <!-- 세션 유효시간을 분 단위로 설정 (기본값:30분) -->
+  <!-- 15분으로 설정  -->
+  <session-config>
+    <session-timeout>15</session-timeout>
+  </session-config>
+ 
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <!-- 에러 페이지 설정 -->
+  <!--  
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error/404code.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error/500code.jsp</location>
+  </error-page>
+  -->
+  
+</web-app>

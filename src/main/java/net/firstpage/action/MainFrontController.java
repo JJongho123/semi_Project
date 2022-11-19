@@ -1,0 +1,158 @@
+package net.firstpage.action;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MainFrontController extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doProcess(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String RequestURI = request.getRequestURI();
+		String contextPath = request.getContextPath();
+		String command = RequestURI.substring(contextPath.length());
+		ActionForward forward = null;
+		Action action = null;
+
+			// 1.리스트
+		if (command.equals("/ProductList.bo")) {
+			action = new ProductListAction();
+
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} 
+			// 2.상품등록 페이지 연결
+		else if (command.equals("/ProductAdd.bo")) {
+			forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("./firstpage/product_add.jsp");
+
+
+		}
+			// 3. 상품추가 !!
+		else if (command.equals("/ProductAddAction.bo")){
+			action = new ProductAddAction();
+			
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+			// 4. 메인화면 이동
+		else if (command.equals("/Mainpage.bo")) {			 
+			forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("./firstpage/main_page.jsp");
+			
+		}
+			// 5. 상품 상세정보
+		else if (command.equals("/ProductDetail.bo")) {
+			   action = new ProductDetailAction();
+		         try {
+		            forward = action.execute(request, response);
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         }
+
+
+		}
+		   // 6. 상품 삭제
+		else if (command.equals("/ProductDelete.bo")) {
+			   action = new ProductDeleteAction();
+		         try {
+		            forward = action.execute(request, response);
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         }
+		}
+			// 7. 상품 정렬
+//		else if (command.equals("/ProductSort.bo")) {
+//			   action = new ProductSortAction();
+//		         try {
+//		            forward = action.execute(request, response);
+//		         } catch (Exception e) {
+//		            e.printStackTrace();
+//		         }
+//		}
+			// 8. 상품 상세정보
+		else if (command.equals("/GoingCart.bo")) {
+			   action = new GoingCartAction();
+		         try {
+		            forward = action.execute(request, response);
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         }
+		         
+		}else if (command.equals("/GoingCartum.bo")) {
+					   action = new CartListAction();
+				         try {
+				            forward = action.execute(request, response);
+				         } catch (Exception e) {
+				            e.printStackTrace();
+				         }
+				
+
+
+		}
+			// 9. 상품 수정 페이지
+		else if (command.equals("/ProductModify.bo")) {
+			   action = new ProductModifyView();
+		         try {
+		            forward = action.execute(request, response);
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         }
+		}
+			// 10. 상품 수정 액션 페이지
+		else if (command.equals("/ProductModifyAction.bo")) {
+			   action = new ProductModifyAction();
+		         try {
+		            forward = action.execute(request, response);
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         }
+		}
+		
+		
+		
+		
+		
+
+			// forward 하기위한 필수코드
+		if (forward != null) {
+			if (forward.isRedirect()) {
+				response.sendRedirect(forward.getPath());
+
+			} else {
+				RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
+				dispatcher.forward(request, response);
+			}
+		}
+		
+		
+
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("board doGet()~~~~~~~\n");
+		doProcess(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("board doPost()%%%%%%%%%%% \n");
+		doProcess(request, response);
+	}
+
+}

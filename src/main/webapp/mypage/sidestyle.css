@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+#sidebar, #sideList, #sidebar-toggle {
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-ms-transition:all 0.2s;
+	-o-transition: all 0.2s;
+	transition: all 0.2s;
+}
+#sidebar {
+	-webkit-transform: translate3d(130px,0,0);
+	-moz-transform: translate3d(130px,0,0);
+	transform: translate3d(130px,0,0);
+	overflow:hidden;
+	position:fixed;
+	/* 우측 사이드바 설정 */
+	width:200px; height:50%;
+	right:0; top:0;
+	background:rgb(206, 255, 157);
+}
+#sidebar.sideon {
+	-webkit-transform:translate3d(0,0,0);
+	-moz-transform:translate3d(0,0,0);
+	transform:translate3d(0,0,0); 
+	overflow-y: hidden;
+	background:#f3f3f3; 
+}
+
+#sideList {
+	-webkit-transform:translate3d(0,0,0);
+	-moz-transform:translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+	overflow:hidden;
+	width:270px;
+}
+#sideList.sideon {
+	-webkit-transform: translate3d(-70px,0,0);
+	-moz-transform: translate3d(-70px,0,0);
+	transform: translate3d(-70px,0,0);
+}
+
+#sideList .listLeft { float:left; height:auto; }
+#sideList .listRight { float:right; height:auto; }
+
+#sidebar-toggle .sideOnImg {
+	position:fixed; display:block;
+	right:70px; margin-top:70px;
+	width:50px; height:50px; line-height:50px;
+	border-radius:5px 0 0 5px; background:#444; color:#fff; text-align:center;
+}
+#sidebar-toggle .sideOffImg { display:none; }
+#sidebar-toggle.sideon .sideOffImg {
+	position:fixed; display:block;
+	right:200px; margin-top:70px;
+	width:50px; height:50px; line-height:50px;
+	border-radius:5px 0 0 5px; background:rgb(128, 255, 0); color:#fff; text-align:center; 
+}
+#sidebar-toggle.sideon .sideOnImg { display:none; }
