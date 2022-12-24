@@ -12,6 +12,6 @@
 session.invalidate();
 response.sendRedirect("./main.kr");
 System.out.println("로그아웃 완료~");
-	%>
+%>
 </body>
 </html>

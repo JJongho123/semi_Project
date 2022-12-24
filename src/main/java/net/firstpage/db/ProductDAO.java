@@ -50,17 +50,20 @@ public class ProductDAO {
 				num = 1;
 			}
 
-			sql = "insert into fresh_product (pro_num, pro_name, pro_kind, pro_price, "
-					+ "pro_content, pro_image, USER_ID) " + "values (?, ?, ?, ?, ?, ?, ?)";
+			sql = "insert into fresh_product (pro_num, pro_name,  pro_price, "
+					+ "pro_content, pro_image, pro_temp, pro_weight, pro_time, USER_ID) " + "values (?, ?, ?, ?, ?, ?, ?, ? ,?)";
 			pstmt = con.prepareStatement(sql);
 
 			pstmt.setInt(1, num);
 			pstmt.setString(2, productdata.getPRO_NAME());
-			pstmt.setString(3, productdata.getPRO_KIND());
-			pstmt.setInt(4, productdata.getPRO_PRICE());
-			pstmt.setString(5, productdata.getPRO_CONTENT());
-			pstmt.setString(6, productdata.getPRO_IMAGE());
-			pstmt.setString(7, productdata.getUSER_ID());
+			
+			pstmt.setInt(3, productdata.getPRO_PRICE());
+			pstmt.setString(4, productdata.getPRO_CONTENT());
+			pstmt.setString(5, productdata.getPRO_IMAGE());
+			pstmt.setInt(6, productdata.getPRO_TEMP());
+			pstmt.setInt(7, productdata.getPRO_WEIGHT());
+			pstmt.setInt(8, productdata.getPRO_TIME());
+			pstmt.setString(9, productdata.getUSER_ID());
 
 			result = pstmt.executeUpdate();
 			if (result == 0)
@@ -87,8 +90,8 @@ public class ProductDAO {
 	// 3. 상품 목록 보기
 	public List<ProductBean> getProductList(int page, int limit, String cond, int num) {
 
-		String product_list_sql = "select * from " + "(select rownum rnum, pro_num, pro_name, pro_kind, "
-				+ "pro_price, pro_content, pro_image " + " from (select * from fresh_product order by pro_num asc)) "
+		String product_list_sql = "select * from " + "(select rownum rnum, pro_num, pro_name, "
+				+ "pro_price, pro_content, pro_image, pro_temp , pro_weight, pro_time " + " from (select * from fresh_product order by pro_num asc)) "
 				+ " where rnum >= ? and rnum <= ? ";
 		if (num == 1) {
 			product_list_sql += " order by PRO_PRICE asc";
@@ -97,8 +100,11 @@ public class ProductDAO {
 		} else if (num == 3) {
 			product_list_sql += " order by PRO_NUM desc";
 		}
-		String product_list_sql_fmt = "select * from " + "(select rownum rnum, pro_num, pro_name, pro_kind, "
-				+ "pro_price, pro_content, pro_image "
+		else if(num ==4) {
+			product_list_sql += "";
+		}
+		String product_list_sql_fmt = "select * from " + "(select rownum rnum, pro_num, pro_name, "
+				+ "pro_price, pro_content, pro_image,  pro_temp , pro_weight, pro_time  "
 				+ " from (select * from fresh_product where %s order by pro_num asc)) "
 				+ " where rnum >= ? and rnum <= ? ";
 		if (num == 1) {
@@ -107,6 +113,9 @@ public class ProductDAO {
 			product_list_sql_fmt += " order by PRO_PRICE desc";
 		} else if (num == 3) {
 			product_list_sql_fmt += " order by PRO_NUM desc";
+		}
+		else if(num ==4) {
+			product_list_sql += "";
 		}
 
 		if (cond != null && !cond.equals("")) {
@@ -117,7 +126,7 @@ public class ProductDAO {
 
 		List<ProductBean> list = new ArrayList<ProductBean>();
 
-		int startrow = (page - 1) * 10 + 1; // 읽기 시작할 row 번호
+		int startrow = (page - 1) * 8 + 1; // 읽기 시작할 row 번호
 		int endrow = startrow + limit - 1; // 읽을 마지막 row 번호
 
 		try {
@@ -136,10 +145,13 @@ public class ProductDAO {
 				ProductBean product = new ProductBean();
 				product.setPRO_NUM(rs.getInt("PRO_NUM"));
 				product.setPRO_NAME(rs.getString("PRO_NAME"));
-				product.setPRO_KIND(rs.getString("PRO_KIND"));
 				product.setPRO_PRICE(rs.getInt("PRO_PRICE"));
 				product.setPRO_CONTENT(rs.getString("PRO_CONTENT"));
 				product.setPRO_IMAGE(rs.getString("PRO_IMAGE"));
+				product.setPRO_TEMP(rs.getInt("PRO_TEMP"));
+				product.setPRO_WEIGHT(rs.getInt("PRO_WEIGHT"));
+				product.setPRO_TIME(rs.getInt("PRO_TIME"));
+			
 
 				list.add(product);
 			}
@@ -159,6 +171,60 @@ public class ProductDAO {
 				e.printStackTrace();
 			}
 		}
+		return null;
+	}
+
+	// 메인페이지 상품목록 보기
+	public List<ProductBean> getmainlist() {
+		String sql = "select  * from (select * from fresh_product order by PRO_NUM desc) WHERE ROWNUM <= 8";
+		
+		
+
+		List<ProductBean> list = new ArrayList<ProductBean>();
+		
+		System.out.println("여기까지 도달!");
+
+		try {
+			con = ds.getConnection();
+
+			System.out.println("getmainlist() : " + sql);
+
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ProductBean product = new ProductBean();
+				
+				product.setPRO_NUM(rs.getInt("PRO_NUM"));
+				product.setPRO_NAME(rs.getString("PRO_NAME"));
+				product.setPRO_PRICE(rs.getInt("PRO_PRICE"));
+				product.setPRO_CONTENT(rs.getString("PRO_CONTENT"));
+				product.setPRO_IMAGE(rs.getString("PRO_IMAGE"));
+				product.setPRO_TEMP(rs.getInt("PRO_TEMP"));
+				product.setPRO_WEIGHT(rs.getInt("PRO_WEIGHT"));
+				product.setPRO_TIME(rs.getInt("PRO_TIME"));
+				
+				
+				list.add(product);
+			}
+			return list;
+		} catch (Exception e) {
+			System.out.println("getmainlist() 에러 : " + e);
+			System.out.println("getmainlist() 에러 : " + sql);
+
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return null;
 	}
 
@@ -201,9 +267,9 @@ public class ProductDAO {
 	}
 
 	// 5. 상품정보 카트로 넘기기
-	
-	  public CartVo getdetailcart(int num, String id) {
-	
+
+	public CartVo getdetailcart(int num, String id) {
+
 		CartVo cartvo = null;
 
 		try {
@@ -218,11 +284,11 @@ public class ProductDAO {
 				cartvo.setUSER_ID(id);
 				cartvo.setPRO_NUM(rs.getInt("PRO_NUM"));
 				cartvo.setPRO_NAME(rs.getString("PRO_NAME"));
-				cartvo.setPRO_KIND(rs.getString("PRO_KIND"));
+				
 				cartvo.setPRO_PRICE(rs.getInt("PRO_PRICE"));
 				cartvo.setPRO_CONTENT(rs.getString("PRO_CONTENT"));
 				cartvo.setPRO_IMAGE(rs.getString("PRO_IMAGE"));
-		
+
 			}
 			return cartvo;
 		} catch (Exception e) {
@@ -247,7 +313,6 @@ public class ProductDAO {
 		return null;
 	}
 
-
 	// 6. 상품 상세정보
 	public ProductBean getDetail(int num) {
 		ProductBean product = null;
@@ -263,10 +328,13 @@ public class ProductDAO {
 				product = new ProductBean();
 				product.setPRO_NUM(rs.getInt("PRO_NUM"));
 				product.setPRO_NAME(rs.getString("PRO_NAME"));
-				product.setPRO_KIND(rs.getString("PRO_KIND"));
 				product.setPRO_PRICE(rs.getInt("PRO_PRICE"));
 				product.setPRO_CONTENT(rs.getString("PRO_CONTENT"));
 				product.setPRO_IMAGE(rs.getString("PRO_IMAGE"));
+				product.setPRO_TEMP(rs.getInt("PRO_TEMP"));
+				product.setPRO_WEIGHT(rs.getInt("PRO_WEIGHT"));
+				product.setPRO_TIME(rs.getInt("PRO_TIME"));
+				
 
 			}
 			return product;
@@ -323,142 +391,92 @@ public class ProductDAO {
 		return false;
 	}
 
-	// 8. 상품 정렬
-	public List<ProductBean> getSort(int num) {
-		List<ProductBean> list = new ArrayList<ProductBean>();
+	// 9. 카트테이블에 상품 값들 추가하기
+
+	public boolean cartInsert(CartVo cartvo) {
+
+		int num = 0;
 
 		String sql = "";
 
-		if (num == 1) {
-			sql = "select * from fresh_product order by PRO_PRICE asc";
-		} else if (num == 2) {
-			sql = "select * from fresh_product order by PRO_PRICE desc";
-		} else if (num == 3) {
-			sql = "select * from fresh_product  order by PRO_NUM desc";
-		}
-				
+		int result = 0;
+
 		try {
 			con = ds.getConnection();
-			System.out.println("getConnection()");
-
-			System.out.println("getListCount() : " + sql);
-
-			pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement("select max(cart_num) from fresh_cart");
 			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				ProductBean product = new ProductBean();
-				product.setPRO_NUM(rs.getInt("PRO_NUM"));
-				product.setPRO_NAME(rs.getString("PRO_NAME"));
-				product.setPRO_KIND(rs.getString("PRO_KIND"));
-				product.setPRO_PRICE(rs.getInt("PRO_PRICE"));
-				product.setPRO_CONTENT(rs.getString("PRO_CONTENT"));
-				product.setPRO_IMAGE(rs.getString("PRO_IMAGE"));
+			if (rs.next())
+				num = rs.getInt(1) + 1;
 
-				list.add(product);
-			}
-			return list;
+			else
+				num = 1;
+
+			sql = "insert into fresh_cart (cart_num, cart_quantity, cart_price, cart_seq, ";
+			sql += "PRO_NAME, PRO_PRICE, PRO_CONTENT, PRO_IMAGE, PRO_SEQ, PRO_NUM, USER_ID) ";
+			sql += "values(?,?,?,?,?,?,?,?,?,?,?)";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.setInt(2, 1);
+			pstmt.setInt(3, 0);
+			pstmt.setInt(4, 0);
+			pstmt.setString(5, cartvo.getPRO_NAME());
+			pstmt.setInt(6, cartvo.getPRO_PRICE());
+			pstmt.setString(7, cartvo.getPRO_CONTENT());
+			pstmt.setString(8, cartvo.getPRO_IMAGE());
+			pstmt.setInt(9, 0);
+			pstmt.setInt(10, cartvo.getPRO_NUM());
+			pstmt.setString(11, cartvo.getUSER_ID());
+
+			result = pstmt.executeUpdate();
+			if (result == 0)
+				return false;
+
+			return true;
 
 		} catch (Exception e) {
-			System.out.println("getSort() 에러 : " + e);
-			System.out.println("getSort() 에러 : " + sql);
+			System.out.println("boardInsert 등록 실패 : 33" + e);
 		} finally {
-			try {
-				if (rs != null)
+			if (rs != null)
+				try {
 					rs.close();
-				if (pstmt != null)
+				} catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
 					pstmt.close();
-				if (con != null)
+				} catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
 					con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+				} catch (SQLException ex) {
+				}
 		}
-		return null;
+		return false;
+
 	}
 
-	// 9. 카트테이블에 상품 값들 추가하기
-
-		public boolean cartInsert(CartVo cartvo) {
-
-			int num = 0;
-
-			String sql = "";
-
-			int result = 0;
-
-			try {
-				con = ds.getConnection();
-				pstmt = con.prepareStatement("select max(cart_num) from fresh_cart");
-				rs = pstmt.executeQuery();
-
-				if (rs.next())
-					num = rs.getInt(1) + 1;
-
-				else
-					num = 1;
-
-				sql = "insert into fresh_cart (cart_num, cart_quantity, cart_price, cart_seq, ";
-				sql += "PRO_NAME, PRO_KIND, PRO_PRICE, PRO_CONTENT, PRO_IMAGE, PRO_SEQ, PRO_NUM, USER_ID) ";
-				sql += "values(?,?,?,?,?,?,?,?,?,?,?,?)";
-
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, num);
-				pstmt.setInt(2, 1);
-				pstmt.setInt(3, 0);
-				pstmt.setInt(4, 0);
-				pstmt.setString(5, cartvo.getPRO_NAME());
-				pstmt.setString(6, cartvo.getPRO_KIND());
-				pstmt.setInt(7, cartvo.getPRO_PRICE());
-				pstmt.setString(8, cartvo.getPRO_CONTENT());
-				pstmt.setString(9, cartvo.getPRO_IMAGE());
-				pstmt.setInt(10, 0);
-				pstmt.setInt(11, cartvo.getPRO_NUM());
-				pstmt.setString(12, cartvo.getUSER_ID());
-
-				result = pstmt.executeUpdate();
-				if (result == 0)
-					return false;
-
-				return true;
-
-			} catch (Exception e) {
-				System.out.println("boardInsert 등록 실패 : 33" + e);
-			} finally {
-				if (rs != null)
-					try {
-						rs.close();
-					} catch (SQLException ex) {
-					}
-				if (pstmt != null)
-					try {
-						pstmt.close();
-					} catch (SQLException ex) {
-					}
-				if (con != null)
-					try {
-						con.close();
-					} catch (SQLException ex) {
-					}
-			}
-			return false;
-
-		}
 	// 10. 글수정 메서드~!
 	public boolean productModify(ProductBean prodata) throws Exception {
 
-		String sql = "update fresh_product set PRO_NAME=?,";
-		sql += "PRO_CONTENT=?, PRO_KIND=? ,PRO_PRICE=? where PRO_NUM=?";
+		String sql = "update fresh_product set USER_ID=?, PRO_NAME=?,";
+		sql += " PRO_PRICE=? ,PRO_CONTENT=? ,PRO_TEMP=? ,PRO_WEIGHT=? , PRO_TIME=? where PRO_NUM=?";
 
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, prodata.getPRO_NAME());
-			pstmt.setString(2, prodata.getPRO_CONTENT());
-			pstmt.setString(3, prodata.getPRO_KIND());
-			pstmt.setInt(4, prodata.getPRO_PRICE());
-			pstmt.setInt(5, prodata.getPRO_NUM());
+			pstmt.setString(1, prodata.getUSER_ID());
+			pstmt.setString(2, prodata.getPRO_NAME());
+			pstmt.setInt(3, prodata.getPRO_PRICE());
+			pstmt.setString(4, prodata.getPRO_CONTENT());
+			pstmt.setInt(5, prodata.getPRO_TEMP());
+			pstmt.setInt(6, prodata.getPRO_WEIGHT());
+			pstmt.setInt(7, prodata.getPRO_TIME());
+			pstmt.setInt(8, prodata.getPRO_NUM());
 			pstmt.executeUpdate();
+			
 			return true;
 		} catch (Exception e) {
 			System.out.println("productModify 쿼리문 수정 실패 555 : " + e);
@@ -484,7 +502,6 @@ public class ProductDAO {
 	}
 
 	// 11. admin 아이디가 맞는지 확인
-	
 
 	public boolean isBoardWriter(int num, String id) {
 		System.out.println("id=" + id);
@@ -514,115 +531,196 @@ public class ProductDAO {
 		return false;
 	}
 
-	   // 리스트에 값 넣는 거
-	   public List<CartVo> getCartList(String id) {
-	      String sql = "select * from fresh_cart where user_id = ?";
-	      
-	      List<CartVo> list = new ArrayList<CartVo>();
-	      
+	// 카트 리스트에 값 넣는 거
+	public List<CartVo> getCartList(String id) {
+		String sql = "select * from fresh_cart where user_id = ?";
+
+		List<CartVo> list = new ArrayList<CartVo>();
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				CartVo cartvo = new CartVo();
+				cartvo.setPRO_NUM(rs.getInt("PRO_NUM"));
+				cartvo.setPRO_NAME(rs.getString("PRO_NAME"));
+				cartvo.setPRO_KIND(rs.getString("PRO_KIND"));
+				cartvo.setPRO_PRICE(rs.getInt("PRO_PRICE"));
+				cartvo.setPRO_CONTENT(rs.getString("PRO_CONTENT"));
+				cartvo.setPRO_IMAGE(rs.getString("PRO_IMAGE"));
+				cartvo.setCart_num(rs.getInt("CART_NUM"));
+				cartvo.setCART_QUANTITY(rs.getInt("CART_QUANTITY"));
+
+				list.add(cartvo);
+			}
+			return list;
+		} catch (SQLException e) {
+			System.out.println("getCartList 실패 888 : " + e);
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+			}
+
+		}
+		return null;
+	}
+
+	public boolean CartDelete(String id) {
+		String product_delete_sql = "delete from fresh_cart where USER_ID=?";
+
+		int result = 0;
+
+		// 글삭제 ( 액션 클래스에서 비밀번호 일치 여부 확인후 이 메서드를 수행한다.
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(product_delete_sql);
+			pstmt.setString(1, id);
+			result = pstmt.executeUpdate();
+			if (result == 0)
+				return false;
+
+			return true;
+		} catch (Exception e) {
+			System.out.println("ProductDelete 삭제 실패 666 : " + e);
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+			}
+		}
+		return false;
+	}
+		
+	// 카트에 담겨있는 품목인지 확인
+	public boolean CheckCart(int num) {
+		  String sql = "SELECT PRO_NUM FROM fresh_cart WHERE PRO_NUM=?";
+		  
+		  boolean result = false;
+		  try {
+		         con = ds.getConnection();
+		         pstmt = con.prepareStatement(sql);
+		         pstmt.setInt(1, num);
+		         rs = pstmt.executeQuery();
+		         
+		         if(rs.next()) {
+		            if(rs.getInt("PRO_NUM")==num) {
+		               result = true; // 일치
+		            } else {
+		               result = false; // 불일치
+		            }
+		         } 
+		      } catch (Exception ex) {
+		         System.out.println("CheckCart 에러: " + ex);
+		      } finally {
+		         if(rs != null) try {rs.close();}catch(SQLException ex) {}
+		         if(pstmt != null) try {pstmt.close();}catch(SQLException ex) {}
+		         if(con != null) try {con.close();}catch(SQLException ex) {}
+		      }
+		      return result;
+		   }
+	
+		// 장바구니 수량 추가
+	public int quantityUp(int num, int quan) {
+		String sql = "update fresh_cart set cart_quantity=? where PRO_NUM=?";
+		
+		
+		int result = 1;
+		
+		quan ++;
+		System.out.println("quan : " + quan);
+		System.out.println("num : " + num);
 	      try {
-	         con = ds.getConnection();
-	         pstmt = con.prepareStatement(sql);
-	         pstmt.setString(1, id);
-	         rs = pstmt.executeQuery();
-	      
-	         while (rs.next()) {
-	            CartVo cartvo = new CartVo();
-	            cartvo.setPRO_NUM(rs.getInt("PRO_NUM"));
-	            cartvo.setPRO_NAME(rs.getString("PRO_NAME"));
-	            cartvo.setPRO_KIND(rs.getString("PRO_KIND"));
-	            cartvo.setPRO_PRICE(rs.getInt("PRO_PRICE"));
-	            cartvo.setPRO_CONTENT(rs.getString("PRO_CONTENT"));
-	            cartvo.setPRO_IMAGE(rs.getString("PRO_IMAGE"));
-
-	            list.add(cartvo);
-	         }
-	         return list;
-	      } catch (SQLException e) {
-	         System.out.println("getCartList 실패 888 : " + e);
-	      } finally {
-	         try {
-	            if (pstmt != null)
-	               pstmt.close();
-	            if (con != null)
-	               con.close();
-	         } catch (Exception e) {
-	         }
-	         
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, quan);
+				pstmt.setInt(2, num);
+			
+				
+				pstmt.executeUpdate();
+				return result;
+				
+			}catch (Exception ex) {
+	         System.out.println("quantityUp 수정 실패 55 : " + ex);
+	      }finally {
+	         if(rs != null) try {rs.close();}catch(SQLException ex) {}
+	         if(pstmt != null) try {pstmt.close();}catch(SQLException ex) {}
+	         if(con != null) try {con.close();}catch(SQLException ex) {}
 	      }
-	      return null;
+	      return -1;
 	   }
-	   
-	   
-	   
-	
+		
+		// 장바구니 수량 감소
+	public int quantityDown(int num, int quan) {
+		String sql = "update fresh_cart set cart_quantity=? where PRO_NUM=?";
+		
+		
+		int result = 1;
+		
+		quan --;
+		System.out.println("quan : " + quan);
+		System.out.println("num : " + num);
+	      try {
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, quan);
+				pstmt.setInt(2, num);
+			
+				
+				pstmt.executeUpdate();
+				return result;
+				
+			}catch (Exception ex) {
+	         System.out.println("quantityUp 수정 실패 55 : " + ex);
+	      }finally {
+	         if(rs != null) try {rs.close();}catch(SQLException ex) {}
+	         if(pstmt != null) try {pstmt.close();}catch(SQLException ex) {}
+	         if(con != null) try {con.close();}catch(SQLException ex) {}
+	      }
+	      return -1;
+	}
 
-//			// 12. 아이디값 카트테이블에 넣기
-//public CartVo getid(String id, int num) {
-//	CartVo cartvo = null;
-//
-//	try {
-//		con = ds.getConnection();
-//		pstmt = con.prepareStatement("update fresh_cart set USER_ID=? where PRO_NUM=?");
-//		pstmt.setString(1, id);
-//		pstmt.setInt(2, num);
-//
-//		rs = pstmt.executeQuery();
-//		
-//		if (rs.next()) {
-//			cartvo = new CartVo();
-//			cartvo.setUSER_ID(rs.getString("USER_ID"));
-//		}return cartvo;
-//	} catch (Exception e) {
-//		System.out.println("CartVo getid  id값 update 실패 : " + e);
-//	} finally {
-//		if (rs != null)
-//			try {
-//				rs.close();
-//			} catch (SQLException e) {
-//			}
-//		if (pstmt != null)
-//			try {
-//				pstmt.close();
-//			} catch (SQLException e) {
-//			}
-//		if (con != null)
-//			try {
-//				con.close();
-//			} catch (SQLException e) {
-//			}
-//	}
-//	return null;
-//	}
-//	
-	
-	
 
-} 
+	public boolean OrderCart(String id) {
+		String product_delete_sql = "delete from fresh_cart where USER_ID=?";
 
-// 마지막 닫는괄호
+		int result = 0;
 
-// 파일업로드
-//public int upload(String fileName, String fileRealName) {
-//
-//	String SQL = "INSERT INTO FILE VALUES (?, ?)";
-//
-//	try {
-//
-//		PreparedStatement pstmt = con.prepareStatement(SQL);
-//
-//		pstmt.setString(1,  fileName);
-//
-//		pstmt.setString(2,  fileRealName);
-//
-//		return pstmt.executeUpdate();
-//
-//	} catch(Exception e) {
-//
-//		System.out.println("upload 에러 : " + e);
-//
-//	}
-//
-//	return -1;
-//
-//}
+		// 글삭제 ( 액션 클래스에서 비밀번호 일치 여부 확인후 이 메서드를 수행한다.
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(product_delete_sql);
+			pstmt.setString(1, id);
+			result = pstmt.executeUpdate();
+			if (result == 0)
+				return false;
+
+			return true;
+		} catch (Exception e) {
+			System.out.println("OrderCart 주문 실패 666 : " + e);
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+			}
+		}
+		return false;
+	}
+
+	//맨 마지막 닫는괄호		
+}
+

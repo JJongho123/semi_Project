@@ -36,11 +36,14 @@ public class ProductModifyAction implements Action {
 		
 	
 	      try {
+	    	  productdata.setUSER_ID(request.getParameter("USER_ID"));
 	    	  productdata.setPRO_NUM(num);
 	    	  productdata.setPRO_NAME(request.getParameter("PRO_NAME"));
-	    	  productdata.setPRO_CONTENT(request.getParameter("PRO_CONTENT"));
-	    	  productdata.setPRO_KIND(request.getParameter("PRO_KIND"));
 			  productdata.setPRO_PRICE(Integer.parseInt(request.getParameter("PRO_PRICE")));
+			  productdata.setPRO_CONTENT(request.getParameter("PRO_CONTENT"));
+			  productdata.setPRO_TEMP(Integer.parseInt(request.getParameter("PRO_TEMP")));
+			  productdata.setPRO_WEIGHT(Integer.parseInt(request.getParameter("PRO_WEIGHT")));
+			  productdata.setPRO_TIME(Integer.parseInt(request.getParameter("PRO_TIME")));
 	         
 	         result = prodao.productModify(productdata);
 	         if(result == false) {
@@ -50,7 +53,7 @@ public class ProductModifyAction implements Action {
 	         System.out.println("게시판 수정 완료");   
 	         
 	         forward.setRedirect(true);
-	         forward.setPath("./ProductDetail.bo?num=" + productdata.getPRO_NUM());
+	         forward.setPath("./ProductList.bo");
 	         //return forward;
 	      }catch (Exception ex) {
 	         ex.printStackTrace();

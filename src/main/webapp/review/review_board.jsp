@@ -16,6 +16,7 @@
 		int startpage = ((Integer)request.getAttribute("startpage")).intValue();
 		int endpage = ((Integer)request.getAttribute("endpage")).intValue();
     %>
+    
 <!DOCTYPE html>
 <html>
 <%@ include file="../include/header.jsp"%>
@@ -25,74 +26,69 @@
 
 <title>MVC 게시판</title>
 </head>
-<body>
+
 <!-- 게시판 리스트 -->
-<table align = "center" style = "border: 1px;">
-	<tr align="center" valign="middle" bgcolor="#cccc66">
-		<td colspan="3">리뷰 게시판</td>
-		<td colspan="2" align="center">
-			<font size="2">글 개수 : ${listcount}</font>
+<div class = "mt-5" align="center">
+<h4 class="text-secondary">후기 게시판</h4>
+</div >
+
+<table class="table mx-auto mt-5" style = "width: 65%;font-size: 10pt">
+  <tr>
+ 	 	<th class = "text-secondary"  align="left" >
+ 			 글 개수 :  ${listcount}
+ 		 </th>
+ 	 
+		<td align="right">
+			<a class="btn btn-secondary btn-sm" href="./ReviewWrite.rv" role="button">[글쓰기]</a>
 		</td>
 	</tr>
-	
-	<tr align="center" valign="middle" bordercolor="#333333">
-		<td style="font-family: Tahoma; font-size: 10pt;" width="8%" height="26">
-			<div align="center">번호</div>
-		</td>
-		
-		<td style="font-family: Tahoma; font-size: 10pt;" width="50%">
-			<div align="center">제목</div>
-		</td>
-		
-		
-		<td style="font-family: Tahoma; font-size: 10pt;" width="14%">
-			<div align="center">작성자</div>
-		</td>
-		
-		
-		<td style="font-family: Tahoma; font-size: 10pt;" width="17%">
-			<div align="center">날짜</div>
-		</td>
-		
-		
-		<td style="font-family: Tahoma; font-size: 10pt;" width="11%">
-			<div align="center">조회수</div>
-		</td>
-	</tr>
-	<%
-		for(int i=0; i<reviewList.size(); i++){
+</table>
+
+<table class="table mx-auto table-hover" style = "width: 65%">
+  <thead style="font-family: Tahoma;font-size: 11pt;">
+
+    <tr class = "table-success text-secondary" align="center" valign="middle">
+      <th scope="col"  width="5%">글 번호</th>
+      <th scope="col"  width="50%">제목</th>
+      <th scope="col"  width="5%">작성자</th>
+      <th scope="col"  width="8%">등록일</th>
+      <th scope="col"  width="5%">조회수</th>
+    </tr>
+  </thead>
+  <tbody style="font-family: Tahoma;font-size: 11pt;">
+  <%
+		for(int i=0; i <reviewList.size(); i++){
 			ReviewBean bl =(ReviewBean)reviewList.get(i);
 	%>
-	<tr align="center" valign="middle" bordercolor="#333333"
-		onmouseover="this.style.backgroundColor='#a8Ffa8'"
-		onmouseout="this.style.backgroundColor=''">
-		<td height="23" style="font-family: Tahoma; font-size: 10pt">
-			<%=bl.getREVIEW_NUM() %>
-		</td>
+    <tr align="center" valign="middle">
+     <td><%=bl.getREVIEW_NUM() %></td>
+     
+     <td  class = "border" align="left" 
+     onclick="location.href='./ReviewDetailAction.rv?num=<%=bl.getREVIEW_NUM()%>'"
+     style = "cursor:pointer;">
+     		
+		<%=bl.getREVIEW_SUBJECT() %>
 		
-		<td style="font-family: Tahoma;font-size: 10pt;">
-			<div align="left">
-				<a href="./ReviewDetailAction.rv?num=<%=bl.getREVIEW_NUM()%>">
-				<%=bl.getREVIEW_SUBJECT() %>
-				</a>
-			</div>
+	</td>
+	
+	<td>
+		<div align="center"><%=bl.getREVIEW_ID() %></div>
+	</td>	
 		
-		</td>
+	<td class = "border">
+		<div align="center"><%=bl.getREVIEW_DATE() %></div>
+	</td>	
 		
-		<td style="font-family: Tahoma;font-size: 10pt;">
-			<div align="center"><%=bl.getREVIEW_ID() %></div>
-		</td>		
-		<td style="font-family: Tahoma;font-size: 10pt;">
-			<div align="center"><%=bl.getREVIEW_DATE() %></div>
-		</td>		
-		<td style="font-family: Tahoma;font-size: 10pt;">
-			<div align="center"><%=bl.getREADCOUNT() %></div>
-		</td>		
-		
-	</tr>
-	<%} %>
-	<tr align="center" height="20">
-		<td colspan="7" style="font-family: tahoma;font-size: 10pt;">
+	<td>
+		<div align="center"><%=bl.getREADCOUNT() %></div>
+	</td>		
+    </tr>
+    <%} %>
+  </tbody>
+   
+</table>
+
+		<div align="center" style = "margin-bottom:100px; ">
 			<%if(nowpage <= 1){%>
 			[이전]&nbsp;
 			<%}else{ %>
@@ -113,13 +109,7 @@
 			<%}else{ %>
 			<a href="./ReviewBoard.rv?page=<%=nowpage+1 %>">[다음]</a>
 			<%} %>
-		</td>
-	</tr>
-	<tr align="right">
-		<td colspan="5">
-				<a href="./ReviewWrite.rv">[글쓰기]</a>
-		</td>
-	</tr>
-</table>
+			</div>
+
 </body>
 </html>

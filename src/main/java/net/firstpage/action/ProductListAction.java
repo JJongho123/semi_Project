@@ -6,19 +6,20 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.firstpage.db.ProductBean;
 import net.firstpage.db.ProductDAO;
 
 public class ProductListAction implements Action {
 
 	
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
 		
 		String ss = request.getParameter("num");
 		int num =0;
 		if (ss == null) {
 			num = 1;
-		}else {
+		}
+		else {
 			num = Integer.parseInt(request.getParameter("num"));
 		}
 		
@@ -29,7 +30,7 @@ public class ProductListAction implements Action {
 		
 		
 		int page = 1;
-		int limit = 10;
+		int limit = 8;
 		
 		request.setCharacterEncoding("UTF-8");
 		
@@ -54,15 +55,11 @@ public class ProductListAction implements Action {
 			
 		}else if (srchFlds.equals("all")) {
 			String whereFmt = " upper(PRO_NAME) like '%%' || upper('%s') || '%%' "
-							+ " or upper(PRO_KIND) like '%%' || upper('%s') || '%%' "
 							+ " or upper(PRO_CONTENT) like '%%' || upper('%s') || '%%' ";
 			cond = String.format(whereFmt, srchKey, srchKey, srchKey);
 			
 		}else if (srchFlds.equals("name")) {
 			String whereFmt = " upper(PRO_NAME) like '%%' || upper('%s') || '%%' ";
-			cond = String.format(whereFmt, srchKey);
-		}else if (srchFlds.equals("kind")) {
-			String whereFmt = " upper(PRO_KIND) like '%%' || upper('%s') || '%%' ";
 			cond = String.format(whereFmt, srchKey);
 		}else if (srchFlds.equals("con")) {
 			String whereFmt = " upper(PRO_CONTENT) like '%%' || upper('%s') || '%%' ";

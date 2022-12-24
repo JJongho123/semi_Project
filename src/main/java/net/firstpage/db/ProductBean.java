@@ -11,11 +11,34 @@ public class ProductBean {
 	private int		PRO_SEQ;
 	private String	USER_ID;
 	private int 	CART_QUANTITY;
+	private int 	PRO_TIME;
+	private int 	PRO_TEMP;
+	private int 	PRO_WEIGHT;
 	
 	
 	
 	
 	
+	
+	
+	public int getPRO_TIME() {
+		return PRO_TIME;
+	}
+	public void setPRO_TIME(int pRO_TIME) {
+		PRO_TIME = pRO_TIME;
+	}
+	public int getPRO_TEMP() {
+		return PRO_TEMP;
+	}
+	public void setPRO_TEMP(int pRO_TEMP) {
+		PRO_TEMP = pRO_TEMP;
+	}
+	public int getPRO_WEIGHT() {
+		return PRO_WEIGHT;
+	}
+	public void setPRO_WEIGHT(int pRO_WEIGHT) {
+		PRO_WEIGHT = pRO_WEIGHT;
+	}
 	public int getCART_QUANTITY() {
 		return CART_QUANTITY;
 	}

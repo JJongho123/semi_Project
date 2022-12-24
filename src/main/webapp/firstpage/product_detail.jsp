@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="net.firstpage.db.*"%>
 
-
 <%
 ProductBean product = (ProductBean) request.getAttribute("product");
 %>
@@ -16,80 +15,106 @@ ProductBean product = (ProductBean) request.getAttribute("product");
 <body>
 	<%@ include file="../include/menu.jsp"%>
 
+	<div style="margin-left: 50px; margin-top: 100px; margin-right: 50px;">
+		<div class="row g-0">
+			<div class="col-md-8 col-lg-8" style="width: 600px; height: 700px;">
+				<img style="width:700px; height:500px;"
+					src="${path}/productupload/<%=product.getPRO_IMAGE()%>"
+					class="img-fluid rounded-start" alt="...">
 
-	<div class="text-center">
-		<img src="${path}/productupload/<%=product.getPRO_IMAGE()%>"
-			class="rounded float-start" alt="..."
-			style="width: 500px; height: 500px;">
+			</div>
+			<div class="col-md-4 col-lg-4"
+				style="margin-left: 70px; margin-right: 30px;">
+				<div>
+					<h2 style="font-weight: bold;">
+						&nbsp;&nbsp;&nbsp;<%=product.getPRO_NAME()%></h2>
+					<h3 style="font-weight: bold;">
+						&nbsp;&nbsp;&nbsp;
+						<fmt:formatNumber pattern="#,###원"><%=product.getPRO_PRICE()%></fmt:formatNumber>
+					</h3>
+					<br>
+					<h3>&nbsp; ❄ &nbsp;&nbsp;&nbsp;⏰ &nbsp;&nbsp;&nbsp; 🍚</h3>
+
+					<p style="font-weight: bold;">
+						<small class="text-muted"><a style="color: #41A1DE">&nbsp;
+								<%
+								if (product.getPRO_TEMP() < 0) {
+								%> 냉동보관 <%
+								} else if (0 <= product.getPRO_TEMP() && product.getPRO_TEMP() <= 10) {
+								%>냉장보관 <%
+								} else {
+								%> 실온보관 <%
+								}
+								%>
+
+						</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=product.getPRO_TIME()%>분
+
+
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=product.getPRO_WEIGHT()%>g</small>
+					</p>
+
+					<hr>
+					<br>
+					<p><%=product.getPRO_CONTENT()%></p>
+
+
+
+
+					<hr>
+
+					<p>
+						<small class="text-muted">&nbsp;&nbsp;&nbsp;배송정보
+							&nbsp;&nbsp;&nbsp;당일배송</small>
+					</p>
+					<p>
+						<small class="text-muted">&nbsp;&nbsp;&nbsp;배송비
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3,000원 (30,000원 이상 무료)</small>
+					</p>
+					
+					
+					<form action="./GoingCart.bo?num=<%=product.getPRO_NUM()%>"
+						method="post" enctype="multipart/form-data" name="boardform">
+						<input type="hidden" name="USER_ID" value="<%=id%>">
+						<hr>
+						<a class="btn btn-success btn-lg" id="cart"
+								style="text-decoration: none; color: white; align: center;"
+								href="javascript:addboard()">장바구니 </a>
+								
+						<a class="btn btn-danger btn-lg" id="like"
+								style="text-decoration: none; color: white; align: center;"
+								href="javascript:addlike()">찜하기 ♡</a>
+							
+
+					</form>
+		
+					<br>
+					<br>
+				</div>
+			</div>
+		</div>
 	</div>
 
-	<div>
-		<table style="margin-left: 100px;">
 
-			<tr>
-				<td style="font-family: 돋움; font-size: 12" height="16">
-					<div align="center">상품명&nbsp;&nbsp;</div>
-				</td>
 
-				<td style="font-family: 돋움; font-size: 12"><%=product.getPRO_NAME()%>
-				</td>
-			</tr>
-			
-			<tr>
-				<td style="font-family: 돋움; font-size: 12" height="16">
-					<div align="center">상품가격&nbsp;&nbsp;</div>
-				</td>
 
-				<td style="font-family: 돋움; font-size: 12"><%=product.getPRO_PRICE()%>
-				</td>
-			</tr>
-			
-			<tr>
-				<td style="font-family: 돋움; font-size: 12" height="16">
-					<div align="center">상품종류&nbsp;&nbsp;</div>
-				</td>
+<script src="//code.jquery.com/jquery.min.js"></script>
 
-				<td style="font-family: 돋움; font-size: 12"><%=product.getPRO_KIND()%>
-				</td>
-			</tr>
-		
-
-			<tr>
-				<td style="font-family: 돋움; font-size: 12">
-					<div align="center">내 용</div>
-				</td>
-				<td style="font-family: 돋움; font-size: 12">
-					<table style="table-layout: fixed">
-						<tr>
-							<td valign=top style="font-family: 돋움; font-size: 12"><%=product.getPRO_CONTENT()%>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			</table>
-			
 <script>
+
+
 	function addboard(){
-		boardform.submit();
-	}
-</script>
+	
+			var returnVal = confirm("장바구니에 추가 하시겠습니까 ? ");
+			if(returnVal== true){
+			boardform.submit();
+			
+		}
+	}    
 		
-		<!--  id값 여기까지는 넘어옴 -->
-		<h2><%=id %></h2>
-		<form action="./GoingCart.bo?num=<%=product.getPRO_NUM()%>" method="post" enctype="multipart/form-data" name="boardform">
-			<input type="hidden" name="USER_ID" value="<%=id %>">
-			<input type="hidden" name="PRO_NUM" value="<%=product.getPRO_NUM() %>">
-			<input type="hidden" name="PRO_NAME" value="<%=product.getPRO_NAME() %>">
-			<input type="hidden" name="PRO_KIND" value="<%=product.getPRO_KIND() %>">
-			<input type="hidden" name="PRO_PRICE" value="<%=product.getPRO_PRICE() %>">
-			<input type="hidden" name="PRO_CONTENT" value="<%=product.getPRO_CONTENT() %>">
-			<input type="hidden" name="PRO_IMAGE" value="<%=product.getPRO_IMAGE() %>">
-		<a href="javascript:addboard()"> 장바구니추가 </a>
-	
-		</form>
-	
-	</div>
+		
+</script>
+	<%@ include file="../include/footer.jsp"%>
 
 </body>
 </html>
+

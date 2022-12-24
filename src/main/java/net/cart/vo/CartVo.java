@@ -5,7 +5,7 @@ public class CartVo {
 	
 	private String	USER_ID;
 	private int cart_num;
-	private int cart_quantity;
+	private int CART_QUANTITY;
 	private int cart_price;
 	private int cart_seq;
 	private String	PRO_NAME;
@@ -17,6 +17,14 @@ public class CartVo {
 	private int 	PRO_NUM;
 	
 	
+	
+	
+	public int getCART_QUANTITY() {
+		return CART_QUANTITY;
+	}
+	public void setCART_QUANTITY(int cART_QUANTITY) {
+		CART_QUANTITY = cART_QUANTITY;
+	}
 	public String getUSER_ID() {
 		return USER_ID;
 	}
@@ -69,9 +77,7 @@ public class CartVo {
 		return cart_num;
 	}
 
-	public int getCart_quantity() {
-		return cart_quantity;
-	}
+
 	public int getCart_price() {
 		return cart_price;
 	}
@@ -82,9 +88,7 @@ public class CartVo {
 		this.cart_num = cart_num;
 	}
 	
-	public void setCart_quantity(int cart_quantity) {
-		this.cart_quantity = cart_quantity;
-	}
+
 	public void setCart_price(int cart_price) {
 		this.cart_price = cart_price;
 	}

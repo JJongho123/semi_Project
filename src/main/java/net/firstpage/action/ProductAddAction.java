@@ -40,8 +40,12 @@ public class ProductAddAction implements Action {
 					);
 			
 			
+			
+			
 			productdata.setPRO_NAME(multi.getParameter("PRO_NAME"));
-			productdata.setPRO_KIND(multi.getParameter("PRO_KIND"));
+			productdata.setPRO_TEMP(Integer.parseInt(multi.getParameter("PRO_TEMP")));
+			productdata.setPRO_WEIGHT(Integer.parseInt(multi.getParameter("PRO_WEIGHT")));
+			productdata.setPRO_TIME(Integer.parseInt(multi.getParameter("PRO_TIME")));
 			productdata.setPRO_PRICE(Integer.parseInt(multi.getParameter("PRO_PRICE")));
 			productdata.setPRO_CONTENT(multi.getParameter("PRO_CONTENT"));
 			productdata.setPRO_IMAGE(multi.getFilesystemName((String)multi.getFileNames().nextElement()));

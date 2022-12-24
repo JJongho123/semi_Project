@@ -17,11 +17,6 @@ public class QnaListAction implements Action{
 		HttpSession session=request.getSession();
 		
 		String id=(String)session.getAttribute("id");
-//		if(id==null || !id.equals("admin1234")) {
-//		forward.setRedirect(true);
-//		forward.setPath("./UserLogin.kr");
-//		return forward;
-//	}
 
 		
 		

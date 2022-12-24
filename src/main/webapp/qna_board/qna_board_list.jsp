@@ -24,38 +24,33 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-	crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" 
+rel="stylesheet" 
+integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" 
+crossorigin="anonymous">
 <meta charset="UTF-8">
-<title>공 지 사 항</title>
-
 <%@ include file="../include/header.jsp"%>
 </head>
 <body>
-	<div id="page">
-		<%@ include file="../include/menu.jsp"%>
-	<div id="wrap">
-		<div class="container">
-		
-
-		
-
-	
-<!-- 게시판 리스트 -->
-<table>
-   <tr align="center" valign="middle" bgcolor="#96ecff">
-      <td colspan="3">공 지 사 항</td>
-      <td colspan="2" align="center">
+   <div id="page">
+      <%@ include file="../include/menu.jsp"%>
+   <div id="wrap">
+   <bR><p class="fw-bolder text-center text-success fs-1">NOTICE<bR><br>
+<div class="container">
+   <table class="table table-hover text-center">
+   <thead class="table-light">
+   <tr class="table-success">
+      <th colspan="4">
+      <font size="3">공 지 사 항</font></th>
+      <th colspan="1" align="center">
          <font size="2">글 개수 : ${listcount }</font>
-      </td>
+      </th>
    </tr>
-   
+   </thead>
+   <tbody>
    <tr align="center" valign="middle" bordercolor="#333333">
-      <td style="font-family: Tahoma; font-size:10pt;" width="8%" height="26">
-         <div align="center">번호</div>
+      <td style="font-family:Arial; font-size:10pt;" width="8%" height="26">
+         <div align="center" >번호</div>
       </td>
       <td style="font-family: Tahoma; font-size:10pt;" width="50%">
          <div align="center">제목</div>
@@ -115,7 +110,10 @@
       </td>
    </tr>
    <%} %>
-   <tr align="center" height="20">
+</table>
+      </div>   
+   </div>   
+   <p align="center" align="middle">
       <td colspan="7" style="font-family: Tahoma; font-size:10pt;">
          <%if(nowpage <= 1) {%>
          [이전]&nbsp;
@@ -139,31 +137,20 @@
          <%} %>
       </td>
    </tr>
-   <tr align="right">
-      <td colspan="5">
-         
-		 
-    
-    <% if(id!=null && id.equals("admin1234")){   %>   
-		<a href="./QnaWrite.um">[글쓰기]</a>
-    <% }else{     %>     	
-    	<a href="#" onclick="alert('admin1234 계정만 글쓰기가 가능합니다.'); return false;">[글쓰기]</a>	    
-   	<% } %>
-    
-
-          
-      </td>
-   </tr>
-</table>
-
-
-
-		</div>	
-	</div>	
-	
+</p>
+   <p align="center" valign="middle">
+      <% if(id!=null && id.equals("admin1234")){   %>   
+      <a href="./QnaWrite.um">[글쓰기]</a>
+    <% }else{     %>        
+       <a href="#" onclick="alert('admin1234 계정만 글쓰기가 가능합니다.'); return false;">[글쓰기]</a>       
+      <% } %>
+   </p>
 
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" 
+integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" 
+crossorigin="anonymous">
+</script>
 </body>
 </html>

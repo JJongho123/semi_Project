@@ -22,7 +22,7 @@ ProductBean product = (ProductBean) request.getAttribute("product");
 	</div>
 
 	<div>
-		<table style="margin-left: 100px;">
+		<table>
 
 			<tr>
 				<td style="font-family: 돋움; font-size: 12" height="16">
@@ -37,7 +37,7 @@ ProductBean product = (ProductBean) request.getAttribute("product");
 				<td style="font-family: 돋움; font-size: 12" height="16">
 					<div align="center">상품가격&nbsp;&nbsp;</div>
 				</td>
-
+			
 				<td style="font-family: 돋움; font-size: 12"><%=product.getPRO_PRICE()%>
 				</td>
 			</tr>
@@ -56,6 +56,7 @@ ProductBean product = (ProductBean) request.getAttribute("product");
 				<td style="font-family: 돋움; font-size: 12">
 					<div align="center">내 용</div>
 				</td>
+				
 				<td style="font-family: 돋움; font-size: 12">
 					<table style="table-layout: fixed">
 						<tr>
@@ -65,11 +66,14 @@ ProductBean product = (ProductBean) request.getAttribute("product");
 					</table>
 				</td>
 			</tr>
+			
+			
 			</table>
 		
 		
 
 	</div>
+	<%@ include file="../include/footer.jsp"%>
 
 </body>
 </html>

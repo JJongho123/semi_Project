@@ -56,11 +56,3 @@ public boolean deleteMember(String id) {
  }
 }
    
-
-//회원 탈퇴
-
-   
-  
-  
-   
-

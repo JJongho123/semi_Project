@@ -43,10 +43,7 @@ public class UserUpdateAction implements Action {
          userdata.setUSER_PHONE2(request.getParameter("USER_PHONE2"));
          userdata.setUSER_ZIP_CODE(request.getParameter("USER_ZIP_CODE"));
          userdata.setUSER_ADDR(request.getParameter("USER_ADDR"));
-         //userdata.setUSER_YEAR(Integer.parseInt(request.getParameter("USER_YEAR")));
-         //userdata.setUSER_MONTH(Integer.parseInt(request.getParameter("USER_MONTH")));
-         //userdata.setUSER_DAY(Integer.parseInt(request.getParameter("USER_DAY")));
-         //userdata.setUSER_GENDER(request.getParameter("USER_GENDER"));
+        
          userdata.setUSER_EMAIL_F(request.getParameter("USER_EMAIL_F"));
          userdata.setUSER_EMAIL_B(request.getParameter("USER_EMAIL_B"));
          userdata.setUSER_EMAIL_S(request.getParameter("USER_EMAIL_S"));

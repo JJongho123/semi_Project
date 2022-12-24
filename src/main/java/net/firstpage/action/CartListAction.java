@@ -22,7 +22,7 @@ public class CartListAction implements Action
          String id=(String)session.getAttribute("id");
          
          ProductDAO prodao = new ProductDAO();
-         CartVo cartvo = new CartVo();
+         
          
          List cartList = new ArrayList();
          

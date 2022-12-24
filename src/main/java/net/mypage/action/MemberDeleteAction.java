@@ -42,7 +42,7 @@ public class MemberDeleteAction implements Action {
 		//탈퇴 성공시 메인 페이지 이동
 		System.out.println("회원 삭제 성공");
 		forward.setRedirect(true);
-		forward.setPath("./Mainpage.bo");
+		forward.setPath("./main.kr");
 		return forward;
 	}
 }

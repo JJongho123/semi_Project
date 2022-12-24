@@ -24,23 +24,7 @@ ul {
 </head>
 <%@ include file="../include/menu.jsp"%>
 <body>
-		<div>
-		<h2 style="">MY PAGE</h2>
-		<h3>나의 정보</h3>
 
-		<ul>
-			<li><a href="./############">회원 정보 수정</a></li>
-			<li><a href="./############">회원 탈퇴</a></li>
-		</ul>
-		<br>
-
-		<h3>나의 활동</h3>
-
-		<ul>
-			<li><a href="./############">1:1 문의</a></li>
-		</ul>
-	</div>
-<hr>
 
 
 <form action="./MemberDeleteAction.or" name = "Deleteform" method="post">

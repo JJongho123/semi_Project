@@ -15,9 +15,17 @@
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="net.firstpage.db.*"%>
 <%@ include file="../include/header.jsp"%>
+
 <!DOCTYPE html>
+
 <html>
 <head>
+<style type="text/css">
+a {
+	color: black;
+	text-decoration: none;
+}
+</style>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,11 +38,11 @@
 
 
 <%
-int listcount = ((int)request.getAttribute("listcount"));
-int nowpage = ((int)request.getAttribute("page"));
-int maxpage = ((int)request.getAttribute("maxpage"));
-int startpage = ((int)request.getAttribute("startpage"));
-int endpage = ((int)request.getAttribute("endpage"));
+int listcount = ((int) request.getAttribute("listcount"));
+int nowpage = ((int) request.getAttribute("page"));
+int maxpage = ((int) request.getAttribute("maxpage"));
+int startpage = ((int) request.getAttribute("startpage"));
+int endpage = ((int) request.getAttribute("endpage"));
 
 List productList = (List) request.getAttribute("productlist");
 
@@ -55,13 +63,17 @@ if (srchFlds == null) {
 	function submitSrchForm(num) {
 		document.srchForm.srchKey.value = document.srchForm.srchKey.value
 				.trim();
-		document.srchForm.num.value=num;
+		document.srchForm.num.value = num;
 		document.srchForm.submit();
 	}
+	
+
 	function resetSrchForm(num) {
 		document.srchForm.srchFlds[0].selected = true;
 		document.srchForm.srchKey.value = "";
 	}
+	
+	
 </script>
 
 
@@ -72,11 +84,15 @@ if (srchFlds == null) {
 
 	<!-- 본문 영역 -->
 	<div class="container">
+	
+	<bR><p class="text-center text-success fs-1 fw-BOLDER">SHOP</p><bR>
 
-		<div align="center">
+		<div align="right">
 
 			<table>
+			
 				<!-- 검색기능추가 시작 -->
+				
 				<tr>
 					<td colspan="4" align="center"><br /> &nbsp;&nbsp;&nbsp;
 						<form name="srchForm" action="ProductList.bo" method="post">
@@ -85,40 +101,46 @@ if (srchFlds == null) {
 									<%=srchFlds.equals("all") ? "selected='selected'" : ""%>>모두</option>
 								<option value="name"
 									<%=srchFlds.equals("name") ? "selected='selected'" : ""%>>상품명</option>
-								<option value="kind"
-									<%=srchFlds.equals("kind") ? "selected='selected'" : ""%>>종류</option>
+								
 								<option value="con"
 									<%=srchFlds.equals("con") ? "selected='selected'" : ""%>>내용</option>
 							</select> <input type="text" name="srchKey" size="20" maxlength="50"
 								value="<%=srchKey%>" /> <input type="button" value="검색"
-								onClick="submitSrchForm()" /> <input type="button" value="리셋"
-								onClick="resetSrchForm()" />
-							<input type="hidden" name="num" value="">
-						</form> <br /></td>
+								onClick="submitSrchForm(4)" />  <input type="hidden" name="num"
+								value="">
+						</form> 
+						<br/></td>
 				</tr>
 				<!-- 검색기능끝 -->
+				
+				
 
 
 
 			</table>
 		</div>
+	
 
-
-
+			<hr style="border:3px; margin:3px; padding:0px">
+		<div>
 		<!--  admin 일때만 보이는 등록버튼 -->
 		<c:if test="${sessionScope.id == 'admin1234'}">
-			<span> <a href="./ProductAdd.bo">상품등록</a>
-			</span>
-
+			&nbsp;&nbsp;&nbsp;&nbsp;<span> <a class="btn btn-outline-danger btn-sm" href="./ProductAdd.bo" style="--bs-btn-border-color: var(--bd-light); font-size:15px; text-decoration:none">상품등록</font></a></span>
+		
 		</c:if>
-								
+
 		<span>
-			<a onClick="submitSrchForm(1)" class="btn btn-primary btn-sm">가격낮은순</a> 
-			<a onClick="submitSrchForm(2)" class="btn btn-primary btn-sm">가격높은순</a>
-			<a onClick="submitSrchForm(3)" class="btn btn-primary btn-sm">신상품순</a>
+		
+	
+			&nbsp;&nbsp;	&#124; <a class="btn btn-outline-success btn-sm" onClick="submitSrchForm(1)" style="--bs-btn-border-color: var(--bd-light); font-size:15px; cursor: pointer;">&nbsp;&nbsp;낮은가격순&nbsp;&nbsp;</a>	&#124;&nbsp;
+			 <a class="btn btn-outline-success btn-sm" onClick="submitSrchForm(2)" style="--bs-btn-border-color: var(--bd-light); font-size:15px; cursor: pointer;">높은가격순&nbsp;&nbsp;</a>	&#124;&nbsp;&nbsp;
+			<a class="btn btn-outline-success btn-sm" onClick="submitSrchForm(3)" style="--bs-btn-border-color: var(--bd-light); font-size:15px; cursor: pointer;">신상품순&nbsp;&nbsp;</a>	&nbsp;&nbsp;
 		</span>
+		</div>
+			<hr style="border:3px; margin:3px; padding:0px">
 		
-		
+
+
 
 
 		<div class="container">
@@ -129,11 +151,13 @@ if (srchFlds == null) {
 				%>
 
 
-				<div class="col-lg-3 col-md-6">
-					<div class="card my-3" style="width: 14rem;">
-						<img src="${path}/productupload/<%=bl.getPRO_IMAGE() %>"
+				<div class="col-lg-3 col-md-3">
+					<div class="card my-3" style="width: 16rem;">
+						<a href="./ProductDetail.bo?num=<%=bl.getPRO_NUM()%>"> <img
+							src="${path}/productupload/<%=bl.getPRO_IMAGE() %>"
 							class="card-img-top" alt="..."
-							style="width: 100%; height: 200px;">
+							style="width: 100%; height: 300px;">
+						</a>
 
 
 
@@ -145,19 +169,15 @@ if (srchFlds == null) {
 									value="<%=bl.getPRO_PRICE()%>" />
 							</p>
 
-							<a href="./ProductDetail.bo?num=<%=bl.getPRO_NUM()%>"
-								class="btn btn-primary">상세보기</a>
+
 
 							<!--  admin한테만 보이는 삭제 목록 -->
 							<c:if test="${sessionScope.id == 'admin1234'}">
 								<a href="./ProductDelete.bo?num=<%=bl.getPRO_NUM()%>"
-									class="btn btn-primary">삭제</a>
+									class="btn btn-outline-danger btn-sm" >삭제</a>
 								<a href="./ProductModify.bo?num=<%=bl.getPRO_NUM()%>"
-									class="btn btn-primary">수정</a>
-										
-									
+									class="btn btn-outline-success btn-sm">수정</a>
 							</c:if>
-
 
 						</div>
 					</div>
@@ -167,43 +187,45 @@ if (srchFlds == null) {
 				%>
 			</div>
 
-	<div>
-	<tr align="center" height="20">
-	<td colspan="7" style="font-family: Tachoma;font-size:10pt;">
-		<% if (nowpage <= 1) { %>
-			[이전] &nbsp;
-		<% } else { %>
-			<a href="./ProductList.bo?srchFlds=<%= srchFlds %>&srchKey=<%= srchKey %>&page=<%= nowpage -1 %>">[이전]</a>&nbsp;
-		<% } %>
-		
-		<% for (int a = startpage; a<= endpage; a++) {
-			if (a == nowpage) { %>
-				[<%= a %>] &nbsp;
-			<% } else { %>
-			<a href="./ProductList.bo?srchFlds=<%= srchFlds %>&srchKey=<%= srchKey %>&page=<%= a %>">[<%= a %>]</a>&nbsp;
-			<% } %>
-		<% } %>
-		
-		<% if (nowpage >= maxpage) { %>
-				[다음]
-			<% } else { %>
-			<a href="./ProductList.bo?srchFlds=<%= srchFlds %>&srchKey=<%= srchKey %>&page=<%= nowpage + 1 %>">[다음]</a>
-		<% } %>
-		</td>
-	</tr>
-	</div>
+			<div align="center" >
+				<tr>
+					<td colspan="7" style="font-family: Tachoma; font-size: 10pt;">
+						<% if (nowpage <= 1) {%> 
+						&laquo; &nbsp; 
+						<%} else {%> 
+						<a href="./ProductList.bo?srchFlds=<%=srchFlds%>&srchKey=<%=srchKey%>&page=<%=nowpage - 1%>">&laquo;</a>&nbsp;
+						<%	}%> 
+<% for (int a = startpage; a <= endpage; a++) {
+ 	if (a == nowpage) {
+ %> <%=a%> &nbsp; <%
+ } else {
+ %> 
+ <a href="./ProductList.bo?srchFlds=<%=srchFlds%>&srchKey=<%=srchKey%>&page=<%=a%>"><%=a%></a>&nbsp; 
+ <% } %>
+ <% } %> 
+ <% if (nowpage >= maxpage) {%>&raquo;
+ <% } else {
+ %> 
+ <a href="./ProductList.bo?srchFlds=<%=srchFlds%>&srchKey=<%=srchKey%>&page=<%=nowpage + 1%>">&raquo;</a>
+ <% } %>
+					</td>
+				</tr>
+			</div>
 
-	<form id='frm' name='frm' action='GET'>
-   	 <input type='hidden' name='page' value ='<%=listcount%>'>
-   	 <input type='hidden' name='page' value ='<%=page%>'>
-   	 <input type='hidden' name='page' value ='<%=maxpage%>'>
-   	 <input type='hidden' name='page' value ='<%=startpage%>'>
-   	 <input type='hidden' name='page' value ='<%=endpage%>'>
-	</form>
+
+
+			<form id='frm' name='frm' action='GET'>
+				<input type='hidden' name='page' value='<%=listcount%>'> <input
+					type='hidden' name='page' value='<%=page%>'> <input
+					type='hidden' name='page' value='<%=maxpage%>'> <input
+					type='hidden' name='page' value='<%=startpage%>'> <input
+					type='hidden' name='page' value='<%=endpage%>'>
+			</form>
 
 		</div>
 
 	</div>
+	<%@ include file="../include/footer.jsp"%>
 
 </body>
 </html>
