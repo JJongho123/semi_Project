@@ -56,6 +56,9 @@ references fresh_user(user_id) ON DELETE CASCADE;
 alter table fresh_cart add constraint pk_cart_id2 foreign key(user_id)
 references fresh_user(user_id) ON DELETE CASCADE;
 
+alter table fresh_cart add constraint pk_cart_id2 foreign key(user_id)
+references fresh_user(user_id) ON DELETE CASCADE;
+
 alter table fresh_qna add constraint pk_cart_id3 foreign key(QNA_ID)
 references fresh_user(user_id) ON DELETE CASCADE;
 
@@ -119,46 +122,6 @@ CREATE TABLE fresh_qna (
 select * from fresh_qna;
 
 ---------------------------------------------------------------
-
-CREATE TABLE fresh_order (
-
-   ORDER_NUM      number,
-   ORDER_ID      varchar2(15),
-   ORDER_DATE      date,
-   CART_NUM number,
-   CART_QUANTITY number default 1,
-   PRO_NAME   varchar2(30)      ,
-   PRO_IMAGE      varchar2(50)
-   
-);
-
-select * from fresh_order;
-
------------------------------------------------------------------
-
-CREATE TABLE fresh_zzim(
-	user_id		 varchar2(15),
-	pro_price	number,
-	pro_image   varchar2(50),
-	pro_name	varchar2(15),
-	zzim_num	number
-);
-
-select * from fresh_zzim;
-
-create sequence zzim_num start with 1 increment by 1;
-
-
-select pro_name from fresh_product where PRO_NUM = 1;
-select pro_image from fresh_product where PRO_NUM = 1;
-select pro_price from fresh_product where PRO_NUM = 1;
-
-DELETE FROM fresh_zzim
-WHERE
-zzim_num = 1;
-
-
-	
 
 
 
